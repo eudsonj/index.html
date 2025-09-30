@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Zona Norte Conveniência</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0d1b2a, #1b263b);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #000;
+    }
+    header img {
+      max-height: 120px;
+    }
+    h1 {
+      margin: 10px 0;
+      font-size: 28px;
+      color: #00b4d8;
+    }
+    form {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      background: #fff;
+      color: #000;
+    }
+    .produtos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .produto {
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .produto label {
+      margin-bottom: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      background: #00b4d8;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0077b6;
+    }
+    .codigo {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffd60a;
+      text-align: center;
+      margin-top: 15px;
+    }
+    /* Responsividade */
+    @media (max-width: 600px) {
+      .produtos {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Coloque o logo que você enviou -->
+    <img src="logo.png" alt="Zona Norte F.C.">
+    <h1>Zona Norte Conveniência</h1>
+  </header>
+
+  <form id="pedidoForm">
+    <label for="nome">Nome Completo:</label>
+    <input type="text" id="nome" name="nome" required>
+
+    <label>Selecione os Produtos e Quantidades:</label>
+    <div class="produtos">
+      <div class="produto"><label>Cerveja</label><input type="number" min="0" value="0" data-produto="Cerveja"></div>
+      <div class="produto"><label>Refrigerante</label><input type="number" min="0" value="0" data-produto="Refrigerante"></div>
+      <div class="produto"><label>Suco</label><input type="number" min="0" value="0" data-produto="Suco"></div>
+      <div class="produto"><label>Whisky</label><input type="number" min="0" value="0" data-produto="Whisky"></div>
+      <div class="produto"><label>Água</label><input type="number" min="0" value="0" data-produto="Água"></div>
+      <div class="produto"><label>Arroz</label><input type="number" min="0" value="0" data-produto="Arroz"></div>
+      <div class="produto"><label>Feijão</label><input type="number" min="0" value="0" data-produto="Feijão"></div>
+      <div class="produto"><label>Açúcar</label><input type="number" min="0" value="0" data-produto="Açúcar"></div>
+      <div class="produto"><label>Óleo</label><input type="number" min="0" value="0" data-produto="Óleo"></div>
+      <div class="produto"><label>Café</label><input type="number" min="0" value="0" data-produto="Café"></div>
+      <div class="produto"><label>Macarrão</label><input type="number" min="0" value="0" data-produto="Macarrão"></div>
+      <div class="produto"><label>Detergente</label><input type="number" min="0" value="0" data-produto="Detergente"></div>
+      <div class="produto"><label>Sabão em pó</label><input type="number" min="0" value="0" data-produto="Sabão em pó"></div>
+      <div class="produto"><label>Kiboa</label><input type="number" min="0" value="0" data-produto="Kiboa"></div>
+      <div class="produto"><label>Sabonete</label><input type="number" min="0" value="0" data-produto="Sabonete"></div>
+    </div>
+
+    <button type="submit">Enviar Pedido</button>
+    <div class="codigo" id="codigo"></div>
+  </form>
+
+  <script>
+    document.getElementById("pedidoForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nome = document.getElementById("nome").value;
+      const inputs = document.querySelectorAll(".produtos input");
+      let selecionados = [];
+
+      inputs.forEach(input => {
+        const qtd = parseInt(input.value);
+        if (qtd > 0) {
+          selecionados.push(`${qtd} ${input.dataset.produto}`);
+        }
+      });
+
+      if (selecionados.length === 0) {
+        alert("Selecione pelo menos 1 produto com quantidade!");
+        return;
+      }
+
+      const codigo = "ZN" + Math.floor(Math.random() * 100000);
+
+      document.getElementById("codigo").innerText = 
+        "Seu código de retirada: " + codigo;
+
+      // Monta o corpo do e-mail
+      const corpoEmail = `Novo pedido:\n\nNome: ${nome}\nProdutos:\n- ${selecionados.join("\n- ")}\n\nCódigo: ${codigo}`;
+
+      // Abre o cliente de e-mail
+      window.location.href = `mailto:rafaelamartins9643@gmail.com?subject=Novo Pedido&body=${encodeURIComponent(corpoEmail)}`;
+    });
+  </script>
+</body>
+</html>
